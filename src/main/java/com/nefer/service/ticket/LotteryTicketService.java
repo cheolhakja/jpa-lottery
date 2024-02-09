@@ -1,5 +1,6 @@
 package com.nefer.service.ticket;
 
+import com.nefer.domain.member.Candidate;
 import com.nefer.domain.member.Member;
 import com.nefer.domain.member.MemberRepository;
 import com.nefer.domain.ticket.LotteryTicket;
@@ -8,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,7 +52,9 @@ public class LotteryTicketService {
             else if(numberOfMatching.equals(5)) {
                 //Member의 numOfSecondPlace를 +1 시키는 코드
                 Member member = ticket.getMember();
+
                 Integer numOfSecondPlace = member.getNumOfSecondPlace();
+
                 numOfSecondPlace++;
                 member.setNumOfSecondPlace(numOfSecondPlace);
             }
@@ -62,6 +66,50 @@ public class LotteryTicketService {
 
 
     }
+
+
+
+    @Transactional
+    public void convertAFewSecondPlaceToWinning() {
+        List<Member> members = memberRepository.findAll();
+
+        for (Member member : members) {
+            Integer numOfWinning = member.getNumOfWinning();
+            Integer numOfSecondPlace = member.getNumOfSecondPlace();
+
+            //원래 1등 횟수 + 2등을 5번한횟수
+            member.setNumOfWinning(numOfWinning + Math.divideExact(numOfSecondPlace, 5));
+
+            //2등 5번한횟수의 나머지
+            member.setNumOfSecondPlace(numOfSecondPlace % 5);
+
+        }
+
+    }
+
+    @Transactional
+    public List<Candidate> getCandidate() {
+        List<Member> members = memberRepository.findAll();
+
+        List<Candidate> result = new ArrayList<>();
+
+        for (Member member : members) {
+            Integer numOfWinning = member.getNumOfWinning();
+
+            for (int i = 0; i < numOfWinning; i++) {
+                result.add(new Candidate(member.getId(), member.getName()));
+            }
+
+
+        }
+
+        return result;
+
+    }
+
+
+
+
 
     private Integer getNumberOfMatching(List<Integer> winningNumbers, List<Integer> ticketNumbers) {
         Collections.sort(winningNumbers);
