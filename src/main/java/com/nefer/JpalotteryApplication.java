@@ -1,7 +1,6 @@
 package com.nefer;
 
 import com.nefer.domain.member.Member;
-import com.nefer.domain.member.MemberRepository;
 import com.nefer.domain.ticket.LotteryTicket;
 import com.nefer.service.member.MemberService;
 import com.nefer.service.ticket.LotteryTicketService;
@@ -66,5 +65,9 @@ public class JpalotteryApplication implements CommandLineRunner {
 		//2등 여러번 -> 1등
 		this.lotteryTicketService.convertAFewSecondPlaceToWinning();
 
+		//test delete
+		memberService.save(new Member("mo"));
+		memberService.save(new Member("mo"));
+		memberService.delete("mo");
 	}
 }
