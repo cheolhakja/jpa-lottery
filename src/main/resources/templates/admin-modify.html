@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+
+</head>
+<body>
+<div class="container">
+    <form action="/admin/member/add" method="post">
+        <div class="form-group">
+            <label for="memberadd">멤버 추가</label>
+            <input type="text" id="memberadd" name="memberadd" placeholder="추가할 이름을 입력하세요" th:value="${memberadd}">
+            <input type="submit" value="send">
+        </div>
+    </form>
+</div>
+
+<div class="container">
+    <form action="/admin/member/delete" method="post">
+        <div class="form-group">
+            <label for="memberdelete">멤버 삭제</label>
+            <input type="text" id="memberdelete" name="memberdelete" placeholder="삭제할 이름 입력하세요" th:value="${memberdelete}">
+            <input type="submit" value="send">
+        </div>
+    </form>
+</div>
+</body>
+</html>
