@@ -30,7 +30,7 @@ public class JpalotteryApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Member member = new Member("kevin");
+		/*Member member = new Member("kevin");
 
 		memberService.save(member);
 
@@ -63,11 +63,7 @@ public class JpalotteryApplication implements CommandLineRunner {
 
 
 		//2등 여러번 -> 1등
-		this.lotteryTicketService.convertAFewSecondPlaceToWinning();
+		this.lotteryTicketService.convertAFewSecondPlaceToWinning();*/
 
-		//test delete
-		memberService.save(new Member("mo"));
-		memberService.save(new Member("mo"));
-		memberService.delete("mo");
 	}
 }
