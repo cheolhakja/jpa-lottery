@@ -32,6 +32,7 @@ public class LotteryTicketService {
 
     @Transactional
     public void calculateWinnerAndUpdateMembers (List<Integer> winningNumbers) {
+        //1등횟수와 2등횟수를 계산해서 db에 반영하는 메서드
         List<LotteryTicket> allTickets = lotteryTicketRepository.findAll();
 
 
@@ -71,6 +72,8 @@ public class LotteryTicketService {
 
     @Transactional
     public void convertAFewSecondPlaceToWinning() {
+        //5번이상 2등을 하면 1등 1번으로 바꿔줌
+
         List<Member> members = memberRepository.findAll();
 
         for (Member member : members) {
@@ -89,6 +92,7 @@ public class LotteryTicketService {
 
     @Transactional
     public List<Candidate> getCandidate() {
+        //1등 후보 리스트 반환
         List<Member> members = memberRepository.findAll();
 
         List<Candidate> result = new ArrayList<>();
