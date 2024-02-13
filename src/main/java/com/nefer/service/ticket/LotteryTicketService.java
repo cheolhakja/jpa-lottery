@@ -92,7 +92,7 @@ public class LotteryTicketService {
 
     @Transactional
     public List<Candidate> getCandidate() {
-        //1등 후보 리스트 반환
+        //1등 횟수를 세서 1등 후보 리스트 반환
         List<Member> members = memberRepository.findAll();
 
         List<Candidate> result = new ArrayList<>();
