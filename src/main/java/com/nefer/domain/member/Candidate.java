@@ -24,4 +24,12 @@ public class Candidate {
 
     public Candidate() {
     }
+
+    @Override
+    public String toString() {
+        return "Candidate{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
