@@ -1,7 +1,10 @@
 package com.nefer.controller;
 
 import com.nefer.LotteryNumberValidator;
+import com.nefer.domain.member.Member;
+import com.nefer.domain.ticket.LotteryTicket;
 import com.nefer.service.member.MemberService;
+import com.nefer.service.ticket.LotteryTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,16 +13,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
 public class DropdownController {
 
     private final MemberService memberService;
+    private final LotteryTicketService lotteryTicketService;
 
     @Autowired
-    public DropdownController(MemberService memberService) {
+    public DropdownController(MemberService memberService, LotteryTicketService lotteryTicketService) {
         this.memberService = memberService;
+        this.lotteryTicketService = lotteryTicketService;
     }
 
 
@@ -29,7 +35,7 @@ public class DropdownController {
     }
 
     @PostMapping("/")
-    public String handleFormSubmission(
+    public String handleFormSubmission(@RequestParam("name") String name,
             @RequestParam(value="dropdown1") String dropdown1,
             @RequestParam(value="dropdown2") String dropdown2,
             @RequestParam(value="dropdown3") String dropdown3,
@@ -42,6 +48,12 @@ public class DropdownController {
                 .collect(Collectors.toList());
 
 
+        Optional<Member> member = memberService.findByName(name);
+        if(!member.isPresent()) {
+            return "redirect:/";
+        }
+
+
 
         // Process the selected values from the dropdowns
         ArrayList<Integer> inputLotteryNumbers = new ArrayList<>(result);
@@ -50,6 +62,7 @@ public class DropdownController {
         boolean duplicateOk = LotteryNumberValidator.checkDuplicate(inputLotteryNumbers);
 
         if(duplicateOk) {
+            lotteryTicketService.save(new LotteryTicket(inputLotteryNumbers, member.get()));
             return "done";
         }
         return "redirect:/";
